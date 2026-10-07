@@ -1,0 +1,701 @@
+{
+  "audit": {
+    "development": {
+      "rows": 48000,
+      "columns": 14,
+      "date_start": "2025-01-01",
+      "date_end": "2025-10-31",
+      "duplicate_rows": 0,
+      "duplicate_ids": 0,
+      "missing_values": {
+        "weight": 300,
+        "market_index": 374
+      },
+      "negative_weights": 292,
+      "unseen_city_rows": 0,
+      "unseen_cities": []
+    },
+    "final_validation": {
+      "rows": 12000,
+      "columns": 13,
+      "date_start": "2025-11-01",
+      "date_end": "2025-12-31",
+      "duplicate_rows": 0,
+      "duplicate_ids": 0,
+      "missing_values": {
+        "weight": 165,
+        "market_index": 249
+      },
+      "negative_weights": 145,
+      "unseen_city_rows": 1447,
+      "unseen_cities": [
+        "Allentown",
+        "Charlotte",
+        "Chicago",
+        "Jackson",
+        "Knoxville",
+        "Laredo",
+        "Norfolk",
+        "San Diego"
+      ]
+    },
+    "monthly_quote_correlations": [
+      {
+        "month": "2025-01",
+        "quote_rate_correlation": -0.5998794028557788,
+        "quote_distance_correlation": -0.7212250909481013
+      },
+      {
+        "month": "2025-02",
+        "quote_rate_correlation": -0.6387865412640702,
+        "quote_distance_correlation": -0.7150791901909729
+      },
+      {
+        "month": "2025-03",
+        "quote_rate_correlation": -0.5952045530427105,
+        "quote_distance_correlation": -0.6974141438655279
+      },
+      {
+        "month": "2025-04",
+        "quote_rate_correlation": 0.6128483663659093,
+        "quote_distance_correlation": 0.713191677134608
+      },
+      {
+        "month": "2025-05",
+        "quote_rate_correlation": 0.6238335632830571,
+        "quote_distance_correlation": 0.7246085864981514
+      },
+      {
+        "month": "2025-06",
+        "quote_rate_correlation": -0.5801398062705319,
+        "quote_distance_correlation": -0.6998301774409067
+      },
+      {
+        "month": "2025-07",
+        "quote_rate_correlation": 0.6029802802877539,
+        "quote_distance_correlation": 0.7161182284061467
+      },
+      {
+        "month": "2025-08",
+        "quote_rate_correlation": 0.014834710660619057,
+        "quote_distance_correlation": 0.01520229420931979
+      },
+      {
+        "month": "2025-09",
+        "quote_rate_correlation": -0.5913360891407253,
+        "quote_distance_correlation": -0.7008266305077585
+      },
+      {
+        "month": "2025-10",
+        "quote_rate_correlation": 0.605340052308009,
+        "quote_distance_correlation": 0.7151534645039874
+      }
+    ],
+    "target_distance_correlation": 0.9085191518300771,
+    "target_quantiles": {
+      "0.0": 57.22,
+      "0.01": 327.16880000000003,
+      "0.5": 2030.76,
+      "0.95": 4953.7665,
+      "0.99": 5972.834000000003,
+      "1.0": 25533.0
+    }
+  },
+  "method": {
+    "selection": "Three expanding-window, two-month forward validation periods.",
+    "ensemble_tree_weight": 0.5,
+    "tree_loss": "MAE",
+    "tree_learning_rate": 0.05,
+    "random_seed": 42,
+    "rich_depth": 6,
+    "core_depth": 4,
+    "maximum_iterations": 600,
+    "early_stopping_rounds": 60,
+    "early_stopping": "Last calendar month within each training partition, followed by refitting on that entire partition.",
+    "core_target": "Rate per mile, with distance weights for both fitting and early stopping.",
+    "robust": {
+      "epsilon": 1.35,
+      "alpha": 0.01,
+      "max_iter": 2000,
+      "tol": 1e-06
+    },
+    "excluded_features": [
+      "load_id",
+      "posted_rate as a predictor",
+      "quote_signal in selected models"
+    ]
+  },
+  "environment": {
+    "numpy": "2.4.3",
+    "pandas": "2.3.3",
+    "scipy": "1.16.2",
+    "scikit-learn": "1.7.2",
+    "catboost": "1.2.8",
+    "matplotlib": "3.10.7"
+  },
+  "input_sha256": {
+    "train-test.csv": "892980fd20bac7ac0ca4ec31d3981fca48d52dec88e4f02642ab955f1efb40fe",
+    "validation.csv": "f6cdc7c367b397b90b319fc7ad30fd0e1893fd6a714816dda54c303b0fe71151",
+    "december-chart-inputs.csv": "d4a0cba969e315eae3c967268914960547dc6589568e07bf6182551bdc267e6e",
+    "validation-predictions-template.csv": "79de15adabcf807b8636b9b47ebe964d451fbcb343056c44a2c4b54a219891c6"
+  },
+  "validation": {
+    "score_role": "Internal rolling model-selection validation; no untouched labeled test set is claimed.",
+    "folds": [
+      {
+        "fold": "May-June",
+        "training_start": "2025-01-01",
+        "training_end": "2025-04-30",
+        "test_start": "2025-05-01",
+        "test_end": "2025-06-30",
+        "training_rows": 19110,
+        "test_rows": 9696,
+        "inner_training_rows": 14291,
+        "early_stopping_rows": 4819,
+        "tree_iterations": {
+          "rich": 192,
+          "core": 258,
+          "quote": 107
+        }
+      },
+      {
+        "fold": "July-August",
+        "training_start": "2025-01-01",
+        "training_end": "2025-06-30",
+        "test_start": "2025-07-01",
+        "test_end": "2025-08-31",
+        "training_rows": 28806,
+        "test_rows": 9671,
+        "inner_training_rows": 24023,
+        "early_stopping_rows": 4783,
+        "tree_iterations": {
+          "rich": 600,
+          "core": 590,
+          "quote": 160
+        }
+      },
+      {
+        "fold": "September-October",
+        "training_start": "2025-01-01",
+        "training_end": "2025-08-31",
+        "test_start": "2025-09-01",
+        "test_end": "2025-10-31",
+        "training_rows": 38477,
+        "test_rows": 9523,
+        "inner_training_rows": 33718,
+        "early_stopping_rows": 4759,
+        "tree_iterations": {
+          "rich": 597,
+          "core": 148,
+          "quote": 384
+        }
+      }
+    ],
+    "fold_metrics": [
+      {
+        "fold": "May-June",
+        "model": "Training median",
+        "rows": 9696,
+        "mae": 1175.958841790429,
+        "rmse": 1616.1709521395233,
+        "median_absolute_error": 927.1349999999999,
+        "p90_absolute_error": 2516.94,
+        "mean_error": -467.57874278052816
+      },
+      {
+        "fold": "May-June",
+        "model": "Robust rich regression",
+        "rows": 9696,
+        "mae": 123.80555204240386,
+        "rmse": 638.0002746826756,
+        "median_absolute_error": 49.29212297711797,
+        "p90_absolute_error": 170.03754160966696,
+        "mean_error": -82.04348330531805
+      },
+      {
+        "fold": "May-June",
+        "model": "Seasonal rich CatBoost",
+        "rows": 9696,
+        "mae": 153.4303547548428,
+        "rmse": 648.4253774315124,
+        "median_absolute_error": 68.2922521183599,
+        "p90_absolute_error": 245.59766243090007,
+        "mean_error": -126.62650346511579
+      },
+      {
+        "fold": "May-June",
+        "model": "Selected rich ensemble",
+        "rows": 9696,
+        "mae": 134.55475615252035,
+        "rmse": 641.9199475902273,
+        "median_absolute_error": 55.94249754583416,
+        "p90_absolute_error": 200.67108889150586,
+        "mean_error": -104.33499338521692
+      },
+      {
+        "fold": "May-June",
+        "model": "CatBoost with quote signal",
+        "rows": 9696,
+        "mae": 158.3430865679973,
+        "rmse": 651.4724427522774,
+        "median_absolute_error": 68.24905662930155,
+        "p90_absolute_error": 260.07117501938706,
+        "mean_error": -110.94331280334502
+      },
+      {
+        "fold": "May-June",
+        "model": "Robust core regression",
+        "rows": 9696,
+        "mae": 114.2342247776668,
+        "rmse": 634.3088825128015,
+        "median_absolute_error": 42.972445017422615,
+        "p90_absolute_error": 143.8598884873652,
+        "mean_error": -64.50811414039681
+      },
+      {
+        "fold": "May-June",
+        "model": "Seasonal core CatBoost RPM",
+        "rows": 9696,
+        "mae": 179.62854727141098,
+        "rmse": 657.0702695909436,
+        "median_absolute_error": 93.43510878680706,
+        "p90_absolute_error": 297.61923196874,
+        "mean_error": -155.4304289280023
+      },
+      {
+        "fold": "May-June",
+        "model": "Selected core ensemble",
+        "rows": 9696,
+        "mae": 138.71329008775476,
+        "rmse": 642.8094844168512,
+        "median_absolute_error": 60.96251251942692,
+        "p90_absolute_error": 207.4287503135365,
+        "mean_error": -109.96927153419956
+      },
+      {
+        "fold": "July-August",
+        "model": "Training median",
+        "rows": 9671,
+        "mae": 1128.1113183745217,
+        "rmse": 1532.1882824154654,
+        "median_absolute_error": 929.4799999999998,
+        "p90_absolute_error": 2317.1399999999994,
+        "mean_error": -354.50199152104216
+      },
+      {
+        "fold": "July-August",
+        "model": "Robust rich regression",
+        "rows": 9671,
+        "mae": 107.62727160404593,
+        "rmse": 619.530144184737,
+        "median_absolute_error": 39.20364878915916,
+        "p90_absolute_error": 136.1338874285234,
+        "mean_error": 12.742043885238141
+      },
+      {
+        "fold": "July-August",
+        "model": "Seasonal rich CatBoost",
+        "rows": 9671,
+        "mae": 107.60875810697455,
+        "rmse": 620.3663826030578,
+        "median_absolute_error": 38.240467090467064,
+        "p90_absolute_error": 137.5499233446776,
+        "mean_error": 11.662142998613092
+      },
+      {
+        "fold": "July-August",
+        "model": "Selected rich ensemble",
+        "rows": 9671,
+        "mae": 104.36222131357057,
+        "rmse": 619.3249942731809,
+        "median_absolute_error": 36.29509830758707,
+        "p90_absolute_error": 130.8520887567788,
+        "mean_error": 12.202093441925618
+      },
+      {
+        "fold": "July-August",
+        "model": "CatBoost with quote signal",
+        "rows": 9671,
+        "mae": 126.69158127396723,
+        "rmse": 623.1064603053765,
+        "median_absolute_error": 54.098024442166775,
+        "p90_absolute_error": 182.5790884797866,
+        "mean_error": 28.01256952141256
+      },
+      {
+        "fold": "July-August",
+        "model": "Robust core regression",
+        "rows": 9671,
+        "mae": 134.42004813353248,
+        "rmse": 623.1852980142597,
+        "median_absolute_error": 57.559727456895644,
+        "p90_absolute_error": 203.36522249883228,
+        "mean_error": 43.76486854656308
+      },
+      {
+        "fold": "July-August",
+        "model": "Seasonal core CatBoost RPM",
+        "rows": 9671,
+        "mae": 138.69096070034624,
+        "rmse": 623.026933009187,
+        "median_absolute_error": 66.55509400180017,
+        "p90_absolute_error": 203.30303335934605,
+        "mean_error": 52.02500211460747
+      },
+      {
+        "fold": "July-August",
+        "model": "Selected core ensemble",
+        "rows": 9671,
+        "mae": 134.69292902037827,
+        "rmse": 622.5158360869289,
+        "median_absolute_error": 58.94622973773676,
+        "p90_absolute_error": 198.65514383954996,
+        "mean_error": 47.89493533058528
+      },
+      {
+        "fold": "September-October",
+        "model": "Training median",
+        "rows": 9523,
+        "mae": 1148.923725716686,
+        "rmse": 1569.4241791607556,
+        "median_absolute_error": 926.97,
+        "p90_absolute_error": 2400.2160000000003,
+        "mean_error": -366.4101690643705
+      },
+      {
+        "fold": "September-October",
+        "model": "Robust rich regression",
+        "rows": 9523,
+        "mae": 152.2492406902385,
+        "rmse": 645.4048018561169,
+        "median_absolute_error": 80.8006563029312,
+        "p90_absolute_error": 212.02194122648208,
+        "mean_error": -123.18047559737255
+      },
+      {
+        "fold": "September-October",
+        "model": "Seasonal rich CatBoost",
+        "rows": 9523,
+        "mae": 129.67236295365706,
+        "rmse": 640.1832459796196,
+        "median_absolute_error": 52.1710558447985,
+        "p90_absolute_error": 178.22669644077519,
+        "mean_error": -102.54751822736185
+      },
+      {
+        "fold": "September-October",
+        "model": "Selected rich ensemble",
+        "rows": 9523,
+        "mae": 139.46424350979368,
+        "rmse": 642.3657888351228,
+        "median_absolute_error": 64.79568900765526,
+        "p90_absolute_error": 191.67403115153823,
+        "mean_error": -112.86399691236718
+      },
+      {
+        "fold": "September-October",
+        "model": "CatBoost with quote signal",
+        "rows": 9523,
+        "mae": 115.2366652572442,
+        "rmse": 635.8991827223113,
+        "median_absolute_error": 42.24399108261787,
+        "p90_absolute_error": 141.70846001320507,
+        "mean_error": -84.3409149143341
+      },
+      {
+        "fold": "September-October",
+        "model": "Robust core regression",
+        "rows": 9523,
+        "mae": 171.86452526575948,
+        "rmse": 652.9275054168838,
+        "median_absolute_error": 94.84807901302975,
+        "p90_absolute_error": 262.7254792630254,
+        "mean_error": -142.34503053850997
+      },
+      {
+        "fold": "September-October",
+        "model": "Seasonal core CatBoost RPM",
+        "rows": 9523,
+        "mae": 120.49940103083135,
+        "rmse": 637.0728134563099,
+        "median_absolute_error": 45.49077134905474,
+        "p90_absolute_error": 160.73646880453316,
+        "mean_error": -73.28292158052835
+      },
+      {
+        "fold": "September-October",
+        "model": "Selected core ensemble",
+        "rows": 9523,
+        "mae": 138.30539782166036,
+        "rmse": 642.8764175392863,
+        "median_absolute_error": 59.93581263070291,
+        "p90_absolute_error": 201.27232448093702,
+        "mean_error": -107.81397605951916
+      }
+    ],
+    "pooled_metrics": [
+      {
+        "model": "Training median",
+        "rows": 28890,
+        "mae": 1151.0301879543094,
+        "rmse": 1573.02581415036,
+        "median_absolute_error": 927.8249999999999,
+        "p90_absolute_error": 2414.215,
+        "mean_error": -396.3778570439598
+      },
+      {
+        "model": "Robust rich regression",
+        "rows": 28890,
+        "mae": 127.76571462024981,
+        "rmse": 634.3513303044563,
+        "median_absolute_error": 53.79036977070933,
+        "p90_absolute_error": 176.4464300726293,
+        "mean_error": -63.87376174551763
+      },
+      {
+        "model": "Seasonal rich CatBoost",
+        "rows": 28890,
+        "mae": 130.26012224863905,
+        "rmse": 636.4251578478751,
+        "median_absolute_error": 51.34990382663818,
+        "p90_absolute_error": 189.33356481156173,
+        "mean_error": -72.39688503763733
+      },
+      {
+        "model": "Selected rich ensemble",
+        "rows": 28890,
+        "mae": 126.06604184569551,
+        "rmse": 634.5945640473986,
+        "median_absolute_error": 50.35490053167962,
+        "p90_absolute_error": 176.9299369762328,
+        "mean_error": -68.13532339157747
+      },
+      {
+        "model": "CatBoost with quote signal",
+        "rows": 28890,
+        "mae": 133.5385120494488,
+        "rmse": 636.9496598255042,
+        "median_absolute_error": 53.20981880795,
+        "p90_absolute_error": 198.56506072381285,
+        "mean_error": -55.65854391930965
+      },
+      {
+        "model": "Robust core regression",
+        "rows": 28890,
+        "mae": 139.98813440808158,
+        "rmse": 636.84015591975,
+        "median_absolute_error": 61.67488467780362,
+        "p90_absolute_error": 208.17316765779876,
+        "mean_error": -53.92081539666688
+      },
+      {
+        "model": "Seasonal core CatBoost RPM",
+        "rows": 28890,
+        "mae": 146.4338688575028,
+        "rmse": 639.2359191391199,
+        "median_absolute_error": 64.99229715340539,
+        "p90_absolute_error": 227.2150218199916,
+        "mean_error": -58.9059503512258
+      },
+      {
+        "model": "Selected core ensemble",
+        "rows": 28890,
+        "mae": 137.23301075467705,
+        "rmse": 636.1105266626755,
+        "median_absolute_error": 59.90837817904742,
+        "p90_absolute_error": 202.49468632416355,
+        "mean_error": -56.41338287394633
+      }
+    ],
+    "segments": {
+      "equipment": [
+        {
+          "equipment": "Dry Van",
+          "rows": 16381,
+          "mae": 117.03394566074061,
+          "rmse": 647.4118985160471,
+          "median_absolute_error": 43.89029700972196,
+          "p90_absolute_error": 151.81949774156647,
+          "mean_error": -65.20019885043008
+        },
+        {
+          "equipment": "Flatbed",
+          "rows": 5257,
+          "mae": 137.02564233807604,
+          "rmse": 574.5530693662824,
+          "median_absolute_error": 62.35830200393866,
+          "p90_absolute_error": 219.38358423281957,
+          "mean_error": -69.8580056519749
+        },
+        {
+          "equipment": "Reefer",
+          "rows": 7252,
+          "mae": 138.52331540020486,
+          "rmse": 646.6998909865262,
+          "median_absolute_error": 60.14983459247799,
+          "p90_absolute_error": 198.9300437186299,
+          "mean_error": -73.5164781717245
+        }
+      ],
+      "month": [
+        {
+          "month": "2025-05",
+          "rows": 4913,
+          "mae": 94.52675263522777,
+          "rmse": 555.6404307533141,
+          "median_absolute_error": 35.530316925533725,
+          "p90_absolute_error": 118.15215797907986,
+          "mean_error": -55.870597277065954
+        },
+        {
+          "month": "2025-06",
+          "rows": 4783,
+          "mae": 175.67070456992755,
+          "rmse": 719.8572633874688,
+          "median_absolute_error": 89.71908094760943,
+          "p90_absolute_error": 254.64430902316144,
+          "mean_error": -154.11663212227438
+        },
+        {
+          "month": "2025-07",
+          "rows": 4912,
+          "mae": 110.3178753563483,
+          "rmse": 624.9806959723041,
+          "median_absolute_error": 39.44908823930257,
+          "p90_absolute_error": 141.2010940500459,
+          "mean_error": 14.373339429663384
+        },
+        {
+          "month": "2025-08",
+          "rows": 4759,
+          "mae": 98.21509530850138,
+          "rmse": 613.4327806284499,
+          "median_absolute_error": 33.35689625569421,
+          "p90_absolute_error": 121.35608898685032,
+          "mean_error": 9.96104273972602
+        },
+        {
+          "month": "2025-09",
+          "rows": 4670,
+          "mae": 129.71622430244778,
+          "rmse": 623.8277801084347,
+          "median_absolute_error": 56.6468739099422,
+          "p90_absolute_error": 186.23481059497905,
+          "mean_error": -104.95057708870017
+        },
+        {
+          "month": "2025-10",
+          "rows": 4853,
+          "mae": 148.8446782302357,
+          "rmse": 659.7131121683921,
+          "median_absolute_error": 73.02566348265054,
+          "p90_absolute_error": 196.058844795336,
+          "mean_error": -120.47901248552299
+        }
+      ],
+      "error_tail": {
+        "p99_absolute_error": 1353.1861898841187,
+        "top_one_percent_squared_error_share": 0.9661201851560691
+      }
+    }
+  },
+  "unseen_city_stress": {
+    "purpose": "Additional internal stress test, not an independent final score.",
+    "held_cities": [
+      "Atlanta",
+      "Dallas",
+      "Denver",
+      "Houston",
+      "Miami",
+      "Portland",
+      "Seattle",
+      "Tampa"
+    ],
+    "training_rows": 25726,
+    "test_rows": 1009,
+    "rich": {
+      "rows": 1009,
+      "mae": 91.98146638766906,
+      "rmse": 701.5213085802959,
+      "median_absolute_error": 28.35770579010341,
+      "p90_absolute_error": 82.96017573717165,
+      "mean_error": -26.216642287129982
+    },
+    "core": {
+      "rows": 1009,
+      "mae": 102.5804905471851,
+      "rmse": 699.9971896403144,
+      "median_absolute_error": 34.669800907251556,
+      "p90_absolute_error": 111.47539496811697,
+      "mean_error": -11.34116329000972
+    }
+  },
+  "final_fit": {
+    "training_rows": 48000,
+    "rich_iterations": 476,
+    "core_iterations": 510,
+    "validation_rows": 12000,
+    "december_rows": 31,
+    "validation_prediction_min": 250.7789210655299,
+    "validation_prediction_median": 1955.5454089673506,
+    "validation_prediction_max": 6576.217642465406,
+    "december_prediction_min": 805.5610582553682,
+    "december_prediction_max": 815.8697038445032,
+    "id_order": "Exact order from the supplied prediction template.",
+    "rich_features": [
+      "pickup",
+      "delivery",
+      "route",
+      "equipment",
+      "distance",
+      "weight",
+      "weight_invalid",
+      "day_of_month",
+      "day_of_week",
+      "pickup_lat",
+      "pickup_lon",
+      "delivery_lat",
+      "delivery_lon",
+      "market_index",
+      "year_sin",
+      "year_cos",
+      "inverse_distance",
+      "log_distance"
+    ],
+    "core_features": [
+      "pickup",
+      "delivery",
+      "route",
+      "equipment",
+      "distance",
+      "weight",
+      "weight_invalid",
+      "day_of_month",
+      "day_of_week",
+      "year_sin",
+      "year_cos",
+      "inverse_distance",
+      "log_distance"
+    ],
+    "tree_importance": {
+      "pickup": 0.18555193206989182,
+      "delivery": 0.021329097276311416,
+      "route": 0.0,
+      "equipment": 3.2404418438464657,
+      "distance": 36.83803319145397,
+      "weight": 0.8758701694700104,
+      "weight_invalid": 0.00224381985970032,
+      "day_of_month": 0.06522718411352954,
+      "day_of_week": 0.0048653695762121765,
+      "pickup_lat": 0.5218947745859125,
+      "pickup_lon": 1.062748629163527,
+      "delivery_lat": 0.45106536952226894,
+      "delivery_lon": 0.3775144360290066,
+      "market_index": 0.5619517564458368,
+      "year_sin": 0.16409396674521784,
+      "year_cos": 0.7353785942322759,
+      "inverse_distance": 32.81255396873542,
+      "log_distance": 22.079235896874422
+    }
+  }
+}
